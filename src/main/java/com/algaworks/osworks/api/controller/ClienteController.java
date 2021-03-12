@@ -2,6 +2,8 @@ package com.algaworks.osworks.api.controller;
 
 import java.util.List;
 
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -40,13 +42,13 @@ public class ClienteController {
 	
 	@PostMapping
 	@ResponseStatus(HttpStatus.CREATED)
-	public ResponseEntity<Cliente> adiciona(@RequestBody Cliente cliente){
+	public ResponseEntity<Cliente> adiciona(@Valid @RequestBody Cliente cliente){
 		repository.save(cliente);
 		return ResponseEntity.ok(cliente);
 	}
 	
 	@PutMapping("/{clienteId}")
-	public ResponseEntity<Cliente> atualizar(@RequestBody Cliente cliente, @PathVariable Long clienteId){
+	public ResponseEntity<Cliente> atualizar(@Valid @RequestBody Cliente cliente, @PathVariable Long clienteId){
 		if(!repository.existsById(clienteId)) {
 			return ResponseEntity.notFound().build();
 		}

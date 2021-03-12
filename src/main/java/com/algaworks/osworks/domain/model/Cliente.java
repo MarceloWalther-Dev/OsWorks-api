@@ -5,6 +5,9 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Size;
 
 @Entity
 public class Cliente {
@@ -13,25 +16,22 @@ public class Cliente {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	
+	@NotBlank(message = "Campo invalido, por favor informar o nome.")
+	@Size(max = 60)
 	@Column(name = "name")
 	private String nome;
+	
+	@NotBlank(message = "Campo invalido, por favor informar o email.")
+	@Email
+	@Size(max = 255)
 	@Column(name = "email")
 	private String email;
+	
+	@NotBlank(message = "Campo invalido, por favor informar o telefone.")
+	@Size(max = 13)
 	@Column(name = "phone")
 	private String telefone;
 	
-	public Cliente(Long id, String nome, String email, String telefone) {
-		this.id = id;
-		this.nome = nome;
-		this.email = email;
-		this.telefone = telefone;
-	}
-	
-	
-	
-	public Cliente() {
-	}
-
 
 
 	public Long getId() {
