@@ -5,9 +5,11 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
@@ -30,9 +32,9 @@ public class ClienteController {
 		return repository.findAll();
 	}
 	
-	@GetMapping("/clienteID")
-	public ResponseEntity<Cliente> buscar(@PathVariable Long clienteID) {
-		var cliente = repository.findById(clienteID).get();
+	@GetMapping("/{clienteId}")
+	public ResponseEntity<Cliente> buscar(@PathVariable Long clienteId) {
+		var cliente = repository.findById(clienteId).get();
 		return ResponseEntity.ok(cliente);
 	}
 	
@@ -43,4 +45,24 @@ public class ClienteController {
 		return ResponseEntity.ok(cliente);
 	}
 	
+	@PutMapping("/{clienteId}")
+	public ResponseEntity<Cliente> atualizar(@RequestBody Cliente cliente, @PathVariable Long clienteId){
+		if(!repository.existsById(clienteId)) {
+			return ResponseEntity.notFound().build();
+		}
+		cliente.setId(clienteId);
+		Cliente clienteSave = repository.save(cliente);
+		
+		return ResponseEntity.ok(clienteSave);
+		
+	}
+	
+	@DeleteMapping("/{clienteId}")
+	public ResponseEntity<Void> remover(@PathVariable Long clienteId){
+		if(!repository.existsById(clienteId)) {
+			return ResponseEntity.notFound().build();
+		}
+		repository.deleteById(clienteId);
+		return ResponseEntity.noContent().build();
+	}
 }
